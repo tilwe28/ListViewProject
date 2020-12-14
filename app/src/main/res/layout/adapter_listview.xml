@@ -14,7 +14,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/adapter_textView"
+        android:id="@+id/adapter_textView_name"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
