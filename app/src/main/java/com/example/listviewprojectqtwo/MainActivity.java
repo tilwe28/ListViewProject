@@ -17,12 +17,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.List;//Imports
 
 public class MainActivity extends AppCompatActivity {
 
     ListView listView;
-    ArrayList<Console> consoles;
+    ArrayList<Game> games;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,31 +31,31 @@ public class MainActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.main_listView);
 
-        consoles = new ArrayList<>();
-        consoles.add(new Console(R.drawable.wii, "Wii", "November 19, 2006", 249.99));
-        consoles.add(new Console(R.drawable.switchnintendo, "Nintendo Switch", "March 3, 2017", 299.99));
-        consoles.add(new Console(R.drawable.xbox360, "Xbox 360", "November 22, 2005", 299.99));
-        consoles.add(new Console(R.drawable.xboxone, "Xbox One", "Novermber 22, 2013", 399.0));
-        consoles.add(new Console(R.drawable.ps3, "PS3", "November 11, 2006", 599.99));
-        consoles.add(new Console(R.drawable.ps4, "PS4", "November 15, 2013", 399.0));
+        games = new ArrayList<>();
+        games.add(new Game(R.drawable.destinytakenking, "Destiny", "September 9, 2014", "Shared World Shooter"));
+        games.add(new Game(R.drawable.bo3, "Black Ops 3", "November 6, 2015", "First Person Shooter"));
+        games.add(new Game(R.drawable.fortnitebr, "Fortnite", "September 26, 2017", "Battle Royale"));
+        games.add(new Game(R.drawable.nba2k20, "NBA 2k20", "September 5, 2019", "Sport Simulation"));
+        games.add(new Game(R.drawable.assassinscreedsyndicate, "Assassin's Creed Syndicate", "October 23, 2015", "Action-Adventure Stealth"));
+        games.add(new Game(R.drawable.gtav, "Grand Theft Auto V", "September 17, 2013", "Action-Adventure"));
 
-        ListViewAdapter adapter = new ListViewAdapter(this, R.layout.adapter_listview, consoles);
+        ListViewAdapter adapter = new ListViewAdapter(this, R.layout.adapter_listview, games);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-    }
+    }//OnCreate
 
-    public class Console {
+    public class Game {
         int image;
-        String name, date;
-        Double price;
+        String name, date, type;
 
-        public Console (int image, String name, String date, Double price) {
+        public Game (int image, String name, String date, String type) {
             this.image = image;
             this.name = name;
             this.date = date;
-            this.price = price;
-        }
+            this.type = type;
+        }//Constructor for Game
 
+        //Accessor methods
         public int getImage() {
             return image;
         }
@@ -68,22 +68,22 @@ public class MainActivity extends AppCompatActivity {
             return date;
         }
 
-        public Double getPrice() {
-            return price;
+        public String getType() {
+            return type;
         }
-    }
+    }//Game object
 
-    public class ListViewAdapter extends ArrayAdapter<Console> {
+    public class ListViewAdapter extends ArrayAdapter<Game> {
         Context myContext;
         int xml;
-        List<Console> listy;
+        List<Game> listy;
 
-        public ListViewAdapter(@NonNull Context context, int resource, @NonNull List<Console> objects) {
+        public ListViewAdapter(@NonNull Context context, int resource, @NonNull List<Game> objects) {
             super(context, resource, objects);
             myContext = context;
             xml = resource;
             listy = objects;
-        }
+        }//Constructor for ListViewAdapter
 
         @NonNull
         @Override
@@ -99,6 +99,6 @@ public class MainActivity extends AppCompatActivity {
             button.setText("DELETE");
 
             return adapterView;
-        }
-    }
-}
+        }//getView
+    }//ListViewAdapter
+}//MainActivity
