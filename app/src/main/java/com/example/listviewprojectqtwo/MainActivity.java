@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,43 +26,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Game> games = new ArrayList<>();
     TextView textViewDate, textViewType, textViewDescription;
     CharSequence date="Release Date:", type="Type: ", description="Description";
-    ListViewAdapter adapter;
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("TAG", "onStop Method");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d("TAG", "onStart Method");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("TAG", "onDestroy Method");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("TAG", "onResume Method");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("TAG", "onPause Method");
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        Log.d("TAG", "onRestoreInstanceState method");
-    }
+    ListViewAdapter adapter;//declaring variables
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -73,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         outState.putCharSequence("TYPE", type);
         outState.putCharSequence("DESCRIPTION", description);
         Log.d("TAG", "Games and TextViews saved");
-    }
+    }//onSaveInstanceState
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,17 +64,17 @@ public class MainActivity extends AppCompatActivity {
             games.add(new Game(R.drawable.assassinscreedsyndicate, "Assassin's Creed Syndicate", "October 23, 2015", "Action-Adventure Stealth", "Assassin's Creed is a single player story game based in London. It was a game I played when I was bored, and I would play while listening to music. Assassin's creed is a very calming game to play because all the missions are about being stealthy."));
             games.add(new Game(R.drawable.gtav, "Grand Theft Auto V", "September 17, 2013", "Action-Adventure", "GTA V is one of the most fun games because you can do almost anything you want. I also really like it because it was the game that me and my friends started playing when the pandamic first started and we had nothing else to do. GTA V is one of the best games of all time because of the wide variety of things you could do, and Rockstar games frequently adds new content."));
             games.add(new Game(R.drawable.warzone, "Call of Duty Warzone", "March 10, 2020", "Fist Person Battle Royale", "Warzone has been the biggest games during quarantine, and it's the game that I played the most this year. I really like Warzone because it's literally the battle royale version of Call of Duty. The only part about Warzone I dislike is the fact that there is skill based matchmaking and that there are some overpowered weapons."));
-        }
+        }//checking is savedInstanceState is null
 
         textViewDate.setText(date);
         textViewType.setText(type);
         if (getResources().getConfiguration().orientation==2)
-            textViewDescription.setText(description);
+            textViewDescription.setText(description);//setting textViews
 
         adapter = new ListViewAdapter(this, R.layout.adapter_listview, games);
         listView.setAdapter(adapter);
         listView.setItemsCanFocus(true);
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();//filling listView with ArrayList
     }//OnCreate
 
     public class Game {
@@ -126,26 +89,25 @@ public class MainActivity extends AppCompatActivity {
             this.descriptionG = descriptionG;
         }//Constructor for Game
 
-        //Accessor methods
         public int getImage() {
             return image;
-        }
+        }//getImage
 
         public String getName() {
             return name;
-        }
+        }//getName
 
         public String getDate() {
             return dateG;
-        }
+        }//getDate
 
         public String getType() {
             return typeG;
-        }
+        }//getType
 
         public String getDescription() {
             return descriptionG;
-        }
+        }//getDescription
     }//Game object
 
     public class ListViewAdapter extends ArrayAdapter<Game> {
@@ -171,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
             imageView.setImageResource(listy.get(position).getImage());
             textView.setText(listy.get(position).getName());
-            button.setText("DELETE");
+            button.setText("DELETE");//putting elemnts of ArrayList as element in ListView
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -186,12 +148,12 @@ public class MainActivity extends AppCompatActivity {
                         textViewType.setText("Type: "+listy.get(position).getType());
                         textViewDescription.setText(""+listy.get(position).getDescription());
                         description = textViewDescription.getText();
-                    }
+                    }//checking orientation
                     date = textViewDate.getText();
                     type = textViewType.getText();
                     Log.d("TAG", "Image clicked");
                 }
-            });
+            });//onClick for ImageView
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -205,12 +167,12 @@ public class MainActivity extends AppCompatActivity {
                         textViewType.setText("Type: "+listy.get(position).getType());
                         textViewDescription.setText(""+listy.get(position).getDescription());
                         description = textViewDescription.getText();
-                    }
+                    }//checking orientation
                     date = textViewDate.getText();
                     type = textViewType.getText();
                     Log.d("TAG", "Text clicked");
                 }
-            });
+            });//onClick for TextView
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -219,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                     games.remove(position);
                     adapter.notifyDataSetChanged();
                 }
-            });
+            });//onClick for button
             return adapterView;
         }//getView
     }//ListViewAdapter
