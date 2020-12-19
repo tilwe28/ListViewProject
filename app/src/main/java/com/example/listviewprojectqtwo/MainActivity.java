@@ -24,8 +24,9 @@ import java.util.List;//Imports
 public class MainActivity extends AppCompatActivity {
 
     ListView listView;
-    ArrayList<Game> games;
+    ArrayList<Game> games = new ArrayList<>();
     TextView textViewDate, textViewType, textViewDescription;
+    CharSequence date="Release Date:", type="Type: ", description="Description";
     ListViewAdapter adapter;
 
     @Override
@@ -59,6 +60,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d("TAG", "onRestoreInstanceState method");
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("SAVE", games);
+        outState.putCharSequence("DATE", date);
+        outState.putCharSequence("TYPE", type);
+        outState.putCharSequence("DESCRIPTION", description);
+        Log.d("TAG", "Games and TextViews saved");
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -69,13 +86,27 @@ public class MainActivity extends AppCompatActivity {
         textViewType = findViewById(R.id.textView_type);
         textViewDescription = findViewById(R.id.textView_description);
 
-        games = new ArrayList<>();
-        games.add(new Game(R.drawable.destinytakenking, "Destiny", "September 9, 2014", "Shared World Shooter", "Destiny is a combination of a shooter and free roam story game. It was the first game I ever played on my ps4. and I've met many friends through Destiny."));
-        games.add(new Game(R.drawable.bo3, "Black Ops 3", "November 6, 2015", "First Person Shooter", "Call of Duty Black Ops III is a FPS that has multiplayer and zombies game modes. It was the firt FPS I lpayed, and the zombies game mode is something me and my friends played for multiple summers."));
-        games.add(new Game(R.drawable.fortnitebr, "Fortnite", "September 26, 2017", "Battle Royale", "Fortnite is one of the biggest games to ever be released, and with it's creative game mode, me and my friends played many different types of puzzle and deathrun maps."));
-        games.add(new Game(R.drawable.nba2k20, "NBA 2k20", "September 5, 2019", "Sport Simulation", "NBA 2k20 is one of my favorite games because I have always loved basketball. Especially when it's played with your real life teammates."));
-        games.add(new Game(R.drawable.assassinscreedsyndicate, "Assassin's Creed Syndicate", "October 23, 2015", "Action-Adventure Stealth", "Assassin's Creed is a single player story game based in London. It was a game I played when I was bored, and I would play while listening to music."));
-        games.add(new Game(R.drawable.gtav, "Grand Theft Auto V", "September 17, 2013", "Action-Adventure", "GTA V is one of the most fun games because you can do almost anything you want. I also really like it because it was the game that me and my friends started playing when the pandamic first started and we had nothing else to do."));
+        if (savedInstanceState != null) {
+            Log.d("TAG", "Games and TextViews restored");
+            games = (ArrayList<Game>) savedInstanceState.getSerializable("SAVE");
+            date = savedInstanceState.getCharSequence("DATE");
+            type = savedInstanceState.getCharSequence("TYPE");
+            description = savedInstanceState.getCharSequence("DESCRIPTION");
+        } else {
+            Log.d("TAG", "Games filled");
+            games.add(new Game(R.drawable.destinytakenking, "Destiny", "September 9, 2014", "Shared World Shooter", "Destiny is a combination of a shooter and free roam story game. It was the first game I ever played on my ps4, and I've met many friends through Destiny. Destiny is very fun to play by yourself or even with friends, because you get to complete quests as a group."));
+            games.add(new Game(R.drawable.bo3, "Black Ops 3", "November 6, 2015", "First Person Shooter", "Call of Duty Black Ops III is a FPS that has multiplayer and zombies game modes. It was the firt FPS I lpayed, and the zombies game mode is something me and my friends played for multiple summers. In my opinion, Black Ops 3 is the best Black Ops because all the multiplayer maps were fun, there were many balanced guns, and the zombies had many different maps that each had great easter eggs."));
+            games.add(new Game(R.drawable.fortnitebr, "Fortnite", "September 26, 2017", "Battle Royale", "Fortnite is one of the biggest games to ever be released, and with it's creative game mode, me and my friends played many different types of puzzle and death run maps. Fortnite is definitely one of the best battle royales because of the aspect of being able to build and destroy structures."));
+            games.add(new Game(R.drawable.nba2k20, "NBA 2k20", "September 5, 2019", "Sport Simulation", "NBA 2k20 is one of my favorite games because I have always loved basketball. Especially when it's played with your real life teammates. Nba 2k20 was not that good in terms of gameplay, because it was an exact repeat as 2k19 but with slower mechanics."));
+            games.add(new Game(R.drawable.assassinscreedsyndicate, "Assassin's Creed Syndicate", "October 23, 2015", "Action-Adventure Stealth", "Assassin's Creed is a single player story game based in London. It was a game I played when I was bored, and I would play while listening to music. Assassin's creed is a very calming game to play because all the missions are about being stealthy."));
+            games.add(new Game(R.drawable.gtav, "Grand Theft Auto V", "September 17, 2013", "Action-Adventure", "GTA V is one of the most fun games because you can do almost anything you want. I also really like it because it was the game that me and my friends started playing when the pandamic first started and we had nothing else to do. GTA V is one of the best games of all time because of the wide variety of things you could do, and Rockstar games frequently adds new content."));
+            games.add(new Game(R.drawable.warzone, "Call of Duty Warzone", "March 10, 2020", "Fist Person Battle Royale", "Warzone has been the biggest games during quarantine, and it's the game that I played the most this year. I really like Warzone because it's literally the battle royale version of Call of Duty. The only part about Warzone I dislike is the fact that there is skill based matchmaking and that there are some overpowered weapons."));
+        }
+
+        textViewDate.setText(date);
+        textViewType.setText(type);
+        if (getResources().getConfiguration().orientation==2)
+            textViewDescription.setText(description);
 
         adapter = new ListViewAdapter(this, R.layout.adapter_listview, games);
         listView.setAdapter(adapter);
@@ -85,14 +116,14 @@ public class MainActivity extends AppCompatActivity {
 
     public class Game {
         int image;
-        String name, date, type, description;
+        String name, dateG, typeG, descriptionG;
 
-        public Game (int image, String name, String date, String type, String description) {
+        public Game (int image, String name, String dateG, String typeG, String descriptionG) {
             this.image = image;
             this.name = name;
-            this.date = date;
-            this.type = type;
-            this.description = description;
+            this.dateG = dateG;
+            this.typeG = typeG;
+            this.descriptionG = descriptionG;
         }//Constructor for Game
 
         //Accessor methods
@@ -105,15 +136,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public String getDate() {
-            return date;
+            return dateG;
         }
 
         public String getType() {
-            return type;
+            return typeG;
         }
 
         public String getDescription() {
-            return description;
+            return descriptionG;
         }
     }//Game object
 
@@ -148,12 +179,17 @@ public class MainActivity extends AppCompatActivity {
                     if (getResources().getConfiguration().orientation==1) {
                         textViewDate.setText("Release Date: "+listy.get(position).getDate());
                         textViewType.setText("Type: "+listy.get(position).getType());
+                        description = listy.get(position).getDescription();
                     }
                     if (getResources().getConfiguration().orientation==2) {
                         textViewDate.setText("Release Date: "+listy.get(position).getDate());
                         textViewType.setText("Type: "+listy.get(position).getType());
                         textViewDescription.setText(""+listy.get(position).getDescription());
+                        description = textViewDescription.getText();
                     }
+                    date = textViewDate.getText();
+                    type = textViewType.getText();
+                    Log.d("TAG", "Image clicked");
                 }
             });
             textView.setOnClickListener(new View.OnClickListener() {
@@ -162,29 +198,29 @@ public class MainActivity extends AppCompatActivity {
                     if (getResources().getConfiguration().orientation==1) {
                         textViewDate.setText("Release Date: "+listy.get(position).getDate());
                         textViewType.setText("Type: "+listy.get(position).getType());
+                        description = listy.get(position).getDescription();
                     }
                     if (getResources().getConfiguration().orientation==2) {
                         textViewDate.setText("Release Date: "+listy.get(position).getDate());
                         textViewType.setText("Type: "+listy.get(position).getType());
                         textViewDescription.setText(""+listy.get(position).getDescription());
+                        description = textViewDescription.getText();
                     }
+                    date = textViewDate.getText();
+                    type = textViewType.getText();
+                    Log.d("TAG", "Text clicked");
                 }
             });
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.d("TAG", listy.get(position).getName()+" was removed");
-                    removeItem(v);
+                    final int position = listView.getPositionForView((View)v.getParent());
+                    games.remove(position);
+                    adapter.notifyDataSetChanged();
                 }
             });
-
             return adapterView;
         }//getView
     }//ListViewAdapter
-
-    public void removeItem(View v) {
-        final int position = listView.getPositionForView((View)v.getParent());
-        games.remove(position);
-        adapter.notifyDataSetChanged();
-    }
 }//MainActivity
