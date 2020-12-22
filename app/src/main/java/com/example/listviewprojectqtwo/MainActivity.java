@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -182,6 +183,25 @@ public class MainActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                 }
             });//onClick for button
+            adapterView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (getResources().getConfiguration().orientation==1) {
+                        textViewDate.setText("Release Date: "+listy.get(position).getDate());
+                        textViewType.setText("Type: "+listy.get(position).getType());
+                        description = listy.get(position).getDescription();
+                    }
+                    if (getResources().getConfiguration().orientation==2) {
+                        textViewDate.setText("Release Date: "+listy.get(position).getDate());
+                        textViewType.setText("Type: "+listy.get(position).getType());
+                        textViewDescription.setText(""+listy.get(position).getDescription());
+                        description = textViewDescription.getText();
+                    }//checking orientation
+                    date = textViewDate.getText();
+                    type = textViewType.getText();
+                    Log.d("TAG", "AdapterView clicked");
+                }
+            });//onClick for empty space in listView
             return adapterView;
         }//getView
     }//ListViewAdapter
