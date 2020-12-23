@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;//Imports
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewDate, textViewType, textViewDescription;
     CharSequence date="Release Date:", type="Type: ", description="Description";
     ListViewAdapter adapter;//declaring variables
+
+    Button randomizer;
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     }//onSaveInstanceState
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d("TAG", "OnCreate Method");
@@ -49,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         textViewDate = findViewById(R.id.textView_date);
         textViewType = findViewById(R.id.textView_type);
         textViewDescription = findViewById(R.id.textView_description);
+
+        randomizer = findViewById(R.id.button_randomizer);
 
         if (savedInstanceState != null) {
             Log.d("TAG", "Games and TextViews restored");
@@ -76,6 +81,17 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         listView.setItemsCanFocus(true);
         adapter.notifyDataSetChanged();//filling listView with ArrayList
+
+        if (getResources().getConfiguration().orientation==2) {
+            randomizer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Collections.shuffle(games);
+                    adapter.notifyDataSetChanged();
+                    onSaveInstanceState(savedInstanceState);
+                }
+            });
+        }
     }//OnCreate
 
     public class Game {

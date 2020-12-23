@@ -49,13 +49,31 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView_description"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginEnd="1dp"
-        android:layout_marginRight="1dp"
         android:layout_weight=".7"
-        android:text="Descrpition" />
+        android:weightSum="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView_description"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_weight=".8"
+            android:text="Descrpition" />
+
+        <Button
+            android:id="@+id/button_randomizer"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_weight=".2"
+            android:text="Randomize" />
+    </LinearLayout>
 
 </LinearLayout>
